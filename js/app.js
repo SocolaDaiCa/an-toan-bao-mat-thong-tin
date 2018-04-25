@@ -2,7 +2,7 @@
  * @Author: Socola
  * @Date:   2018-04-24 13:47:17
  * @Last Modified by:   Socola
- * @Last Modified time: 2018-04-25 09:20:01
+ * @Last Modified time: 2018-04-25 21:43:02
  */
 'use strict';
 
@@ -29,15 +29,27 @@ function modulo(a, b) {
 	return res;
 }
 
-function mod(a, x, b) {
-	/* a mũ x mod b*/
+function mod(a, x, b, le = 1) {
+	// /* a mũ x mod b*/
 	var res = [];
-	var le = 1;
 	var i = 0;
+	if (a < b && x > 1) {
+		while (a < b && x > 1) {
+			if(x % 2 == 1){
+				le = (le * a) % b;
+			}
+			x = parseInt(x / 2);
+			a = (a * a) % b;
+			res.push({ le, a, x });
+		}
+	}
+
 	while (x > 0) {
 		var duMin = b;
 		let du = 1;
 		let bac = 0;
+
+		res.push({ le, a, x });
 		for (let i = 1; i <= x; i++) {
 			du = (du * a) % b;
 			if (duMin >= du) {
@@ -85,7 +97,7 @@ function logaritRoiRac(a, b) {
 		x = canNguyenThuy(a, b).filter((item) => {
 			return item.c == i;
 		});
-		if(x.length != 0){
+		if (x.length != 0) {
 			x = x.pop().x;
 		} else {
 			x = 'not found';

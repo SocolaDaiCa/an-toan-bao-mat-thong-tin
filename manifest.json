@@ -1,0 +1,23 @@
+{
+	"background_color":"#ffffff",
+	"description":"Casio",
+	"display":"standalone",
+	"icons":[
+		{
+			"src":"images/Socola.jpg",
+			"type":"image/jpg",
+			"density":"1.0"
+		},
+		{
+			"src": "images/Socola.jpg",
+			"sizes": "144x144",
+			"type": "image/jpg",
+			"density": "3.0"
+		}
+	],
+	"lang":"en-US",
+	"name":"Casio",
+	"short_name":"Casio",
+	"start_url":"./",
+	"theme_color":"#4fc08d"
+}

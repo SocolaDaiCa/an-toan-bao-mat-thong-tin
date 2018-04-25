@@ -5,7 +5,7 @@
  * @Email: TokenTien@gmail.com
  * @Date:   2018-04-24 07:25:12
  * @Last Modified by:   Socola
- * @Last Modified time: 2018-04-25 10:55:26
+ * @Last Modified time: 2018-04-25 21:06:38
  */
 ?>
 	<div class="container" id="rsa">
@@ -38,27 +38,19 @@
 			<br> = {{M}}<sup>{{e}}</sup> mod {{N}}
 			<mod-template :items="arr.C" :p="N"></mod-template>
 		</template>
-		<!--
-			<template v-if="!isNaN(M)">
-			</template>
-
-
-			<br>
-
-		</template> -->
 	</div>
 	<script>
 	'use strict';
 	var rsa = new Vue({
 		el: "#rsa",
 		data: {
-			p: 11,
-			q: 13,
-			e: 71,
+			p: 19,
+			q: 29,
+			e: 41,
 			N: '',
 			phiN: '',
-			M: 27,
-			// d: 2,
+			M: 5,
+			d: '',
 			arr: {
 				C: [],
 				d: [],

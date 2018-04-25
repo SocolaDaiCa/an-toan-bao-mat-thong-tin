@@ -1,0 +1,590 @@
+	<!DOCTYPE html>
+	<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<link rel="manifest" href="manifest.json">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="vendors/bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="css/app.css">
+		<script src="vendors/jquery/jquery.min.js"></script>
+		<!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML' async></script> -->
+		<script src="vendors/vue/vue.min.js"></script>
+	</head>
+
+	<body>
+		<script src="js/app.js"></script>
+				<div role="tabpanel">
+			<!-- Nav tabs -->
+			<ul class="nav nav-tabs" role="tablist">
+				<li role="presentation">
+					<a href="#home" aria-controls="home" role="tab" data-toggle="tab">DSA</a>
+				</li>
+				<li role="presentation">
+					<a href="#tab-rsa" aria-controls="tab" role="tab" data-toggle="tab">RSA</a>
+				</li>
+				<li role="presentation">
+					<a href="#tab-modulo" aria-controls="tab" role="tab" data-toggle="tab">Modulo</a>
+				</li>
+				<li role="presentation">
+					<a href="#tab-gcd" aria-controls="tab" role="tab" data-toggle="tab">gcd</a>
+				</li>
+				<li role="presentation">
+					<a href="#tab-ceaser" aria-controls="tab" role="tab" data-toggle="tab">Ceaser</a>
+				</li>
+				<li role="presentation">
+					<a href="#tab-mod" aria-controls="tab" role="tab" data-toggle="tab">Mod</a>
+				</li>
+				<li role="presentation">
+					<a href="#tab-can-nguyen-thuy" aria-controls="tab" role="tab" data-toggle="tab">Căn nguyên thủy</a>
+				</li>
+				<li role="presentation">
+					<a href="#tab-logarit-roi-rac" aria-controls="tab" role="tab" data-toggle="tab">Logarit rời rạc</a>
+				</li>
+				<li role="presentation">
+					<a href="#tab-hellman" aria-controls="tab" role="tab" data-toggle="tab">Hellman</a>
+				</li>
+				<li role="presentation">
+					<a href="#tab-elgamal" aria-controls="tab" role="tab" data-toggle="tab">Elgamal</a>
+				</li>
+				<li role="presentation" class="active">
+					<a href="#tab-search" aria-controls="tab" role="tab" data-toggle="tab">Search</a>
+				</li>
+			</ul>
+			<!-- Tab panes -->
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane" id="home">
+						<div class="container-fluid" id="dsa">
+		<h2>DSA</h2> - Tạo khóa (p, q, g)
+		<br> p =
+		<input type="text" size="1" v-model="p">, q =
+		<input type="text" size="1" v-model="q">, h =
+		<input type="text" size="1" v-model="h">, g = ?
+		<br> Người sử dụng chọn khóa riêng x<sub>A</sub> =
+		<input type="text" size="1" v-model="xA">
+		<br> Khóa công khai y<sub>A</sub> = ?
+		<br> Tạo chữ ký
+		<br> H M -> H(M) = <input type="text" size="1" v-model="hM">
+		<br> Sinh ngẫu nhiên k =
+		<input type="text" size="1" v-model="k">
+		<br> Tính chữ ký (r, s) = ?
+		<br>
+		<br>
+		<template v-if="run">
+			<b><u>Giải</u></b>
+			<br> - <b>Ta có:</b>
+			<br>g = h<sup>(p - 1)/q</sup> mod p
+			<br>&nbsp;&nbsp; = {{h}}<sup>{{p - 1}} / {{q}}</sup> mod {{p}}
+			<br>&nbsp;&nbsp; = {{h}}<sup>{{(p - 1) / q}}</sup> mod {{p}}
+			<br>&nbsp;&nbsp; = {{g}}
+			<br>y<sub>A</sub> = g<sup>x<sub>A</sub></sup> mod p
+			<br>&nbsp;&nbsp;&nbsp; = {{g}}<sup>{{xA}}</sup> mod {{p}}
+			<mod-template v-bind:items="arr.yA" :p="p"></mod-template>
+			<br>
+			<br>- Tính chữ ký (r, s)
+			<br>
+			<br>r = (g<sup>k</sup> mod p) mod q
+			<br>g<sup>k</sup> mod p = {{g}}<sup>{{k}}</sup> mod {{p}}
+			<mod-template :items="arr.gkp" :p="p"></mod-template>
+			<br>r = (g<sup>k</sup> mod p) mod q = {{gkp}} mod {{q}} = {{r}}
+			<br> s = [k<sup>-1</sup> * (H(M) + x * r)] mod q
+			<br> = [{{k}}<sup>-1</sup> * ({{hM}} + {{xA}} * {{r}})] mod {{q}}
+			<br> = ({{k_}} * {{hM + xA * r}}) mod {{q}}
+			<br> = {{s}}
+			<br> Suy ra chữ ký (r, s) = ({{r}}, {{s}})
+			<br>- Kiểm tra chữ ký
+			<br>W = s<sup>-1</sup> mod q = {{s}}<sup>-1</sup> mod {{q}} = {{W}}
+			<br>U<sub>1</sub> = [H(M) * W] mod q = {{hM}} * {{W}} mod  {{q}}= {{U1}}
+			<br>U<sub>2</sub> = (r * W) mod q = {{r}} * {{W}} mod {{q}} = {{U2}}
+			<br>V = [g<sup>U1</sup> * y<sup>U2</sup> mod p] mod q
+			<br> = [{{g}}<sup>{{U1}}</sup> * {{yA}}<sup>{{U2}}</sup> mod {{p}}] mod {{q}}
+			<br> = [({{gU1}} * {{yU2}}) mod {{p}}] mod {{q}}
+			<br> = {{(gU1 * yU2) % p}} mod {{q}} = {{V}}
+			<br>Kết luận: V <span v-if="V == r">= r (Chữ kí đúng)</span><span v-else>!= r (Chữ ký sai)</span>
+		</template>
+	</div>
+	<script src="js/dsa.js"></script>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="tab-rsa">
+						<div class="container" id="rsa">
+		<h3>RSA</h3>
+		p =
+		<input type="text" size="1" v-model="p">, q =
+		<input type="text" size="1" v-model="q">
+		<br> N = ?, phi(N) = ?
+		<br> A chọn e =
+		<input type="text" size="1" v-model="e">
+		<br> K
+		<sub>prA</sub>, d = ?, K<sub>puA</sub> = ?
+		<br> Kịch bản M
+		<input type="text" v-model="M" size="1">
+		<template v-if="run">
+			<br>- Ta có N = p * q = {{p}} * {{q}} = {{N}}
+			<br> phi(N) = (p - 1) * (q - 1) = {{p - 1}} * {{q - 1}} = {{phiN}}
+			<br>d = e<sup>-1</sup> mod phi(N)
+			<br>&nbsp;&nbsp; = {{e}}<sup>-1</sup> mod {{phiN}}
+			<br>&nbsp;&nbsp; = {{d}}
+			<br>Dùng thuật toán Ơclit mở rộng: gcd(a, b) = gcd(b, a mod b)
+			<br>K<sub>prA</sub> = {d, p, q} = { {{d}}, {{p}}, {{q}} }
+			<br>K<sub>puA</sub> = {e, N} = { {{e}}, {{N}} }
+			<br>
+			<br>Kịch bản 1: M = {{M}}
+			<br> B mã M bằng khóa K<sub>puA</sub> và gửi cho A
+			<br>
+			<br>
+			<br> C = M<sup>e</sup> mod N
+			<br> = {{M}}<sup>{{e}}</sup> mod {{N}}
+			<mod-template :items="arr.C" :p="N"></mod-template>
+		</template>
+	</div>
+	<script>
+	'use strict';
+	var rsa = new Vue({
+		el: "#rsa",
+		data: {
+			p: 19,
+			q: 29,
+			e: 41,
+			N: '',
+			phiN: '',
+			M: 5,
+			d: '',
+			arr: {
+				C: [],
+				d: [],
+			}
+		},
+		methods: {
+
+		},
+		computed: {
+			run: function() {
+				this.p = parseInt(this.p);
+				this.q = parseInt(this.q);
+				this.e = parseInt(this.e);
+				this.M = parseInt(this.M);
+
+				var x = !(
+					isNaN(this.p) ||
+					isNaN(this.q) ||
+					isNaN(this.e)
+				);
+				if (!x) { console.log('er'); return false; }
+				this.N = this.p * this.q;
+				this.phiN = (this.p - 1) * (this.q - 1);
+				this.arr.d = modulo(this.e, this.phiN);
+				this.d = this.arr.d[this.arr.d.length - 1].b2;
+				if (this.d < 0) { this.d = this.phiN + this.d; }
+				this.arr.C = mod(this.M, this.e, this.N);
+				return true;
+			}
+		}
+	});
+
+	</script>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="tab-modulo">
+					<div class="container-fluid" id="nghich-dao-modulo">
+	<h3>Nghịch đảo modulo</h3>
+	<input type="text" v-model="a" size="1"><sup>-1</sup> mod <input type="text" v-model="b" size="1">
+	<br><br>
+	<template v-if="run">
+		<modulo-template :items="res"></modulo-template>
+	</template>
+</div>
+<script src="js/nghich-dao-modulo.js"></script>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="tab-gcd">
+						<div class="container-fluid" id="gcd">
+		gcd(
+		<input type="text" size="1" v-model="a">,
+		<input type="text" size="1" v-model="b">) = {{c}}
+	</div>
+	<script>
+	'use strict';
+	const gcdApp = new Vue({
+		el: '#gcd',
+		data: {
+			a: 1,
+			b: 1,
+		},
+		methods: {
+
+		},
+		computed: {
+			c: function() {
+				this.a = parseInt(this.a);
+				this.b = parseInt(this.b);
+
+				if (!Number.isInteger(this.a) || !Number.isInteger(this.b)) {
+					return 'err';
+				}
+				if (this.a * this.b === 0) {
+					return 'infinity';
+				}
+				console.log('x');
+				return gcd(this.a, this.b);
+			}
+		}
+	})
+
+	</script>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="tab-ceaser">
+						<div class="container-fluid" id="ceaser">
+		C = e(p) = (p + k) mod (26)
+		<br> k = <input type="text" v-model="k" size="1">
+		<br>Đoạn cần mã hóa <input type="text" v-model="input" size="1">
+		<br> Kết quả: {{output}}
+	</div>
+	<script>
+	'use strict';
+	const censarApp = new Vue({
+		el: '#ceaser',
+		data: {
+			k: 3,
+			input: 'Anh'
+		},
+		methods: {
+
+		},
+		computed: {
+			output: function() {
+				this.k = parseInt(this.k);
+
+				if(!Number.isInteger(this.k)) {return '???';}
+
+				return this.input.toUpperCase().split('').map((item) => {
+					item = item.charCodeAt(0) + this.k;
+					if(item > 'Z'.charCodeAt(0)){
+						item -= 26;
+					}
+					return String.fromCharCode(item);
+				}).join('');
+			}
+		}
+	});
+
+	</script>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="tab-mod">
+					<div class="container-fluid" id="mod">
+	<input type="text" v-model="a" size="1"> <sup><input type="text" v-model="b" size="1"></sup> mod <input type="text" v-model="c" size="1"> = {{output}}
+	<br>
+	<mod-template :items="arr.res" :p="c"></mod-template>
+</div>
+<script>
+	const modApp = new Vue({
+		el: '#mod',
+		data: {
+			a: 3,
+			b: 101,
+			c: 809,
+			arr: {
+				res: []
+			}
+		},
+		computed: {
+			output: function() {
+				this.a = parseInt(this.a);
+				this.b = parseInt(this.b);
+				this.c = parseInt(this.c);
+
+				if(
+					isNaN(this.a) ||
+					isNaN(this.b) ||
+					isNaN(this.c)
+				){ return '???'}
+
+				this.arr.res = mod(this.a, this.b, this.c);
+				return this.arr.res[this.arr.res.length - 1].le;
+			}
+		}
+	})
+</script>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="tab-can-nguyen-thuy">
+						<div class="container-fluid" id="can-nguyen-thuy">
+		<h3>Căn nguyên thủy</h3>
+		Ta có: a <sup>x</sup> mod b = c => log <sub>a</sub>(c) mod b = x
+		<input type="text" v-model="a" size="1"> có là căn nguyên thủy của
+		<input type="text" v-model="b" size="1"> không ?
+
+		<can-nguyen-thuy-template :items="arr.output"></can-nguyen-thuy-template>
+		<br>{{a}} <span v-if="checkCanNguyenThuy != true">không</span> là căn nguyên thủy của {{b}}
+	</div>
+	<script>
+	'use strict';
+	const canNguyeThuyApp = new Vue({
+		el: '#can-nguyen-thuy',
+		data: {
+			a: 2,
+			b: 4,
+			arr: {
+				output: []
+			}
+		},
+		methods: {
+
+		},
+		computed: {
+			checkCanNguyenThuy: function() {
+				this.a = parseInt(this.a);
+				this.b = parseInt(this.b);
+
+				if(isNaN(this.a) || isNaN(this.b)){
+					return false;
+				}
+				this.arr.output = canNguyenThuy(this.a, this.b);
+
+				return checkCanNguyenThuy(this.a, this.b);
+			}
+		}
+	});
+	</script>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="tab-logarit-roi-rac">
+					<div class="container-fluid" id="logarit-roi-rac">
+	Ta có: a <sup>x</sup> mod b = c => log <sub>a</sub>(c) mod b = x
+	<br> log <sub><input type="text" size="1" v-model="a"></sub>(c) mod <input type="text" size="1" v-model="b"> = x
+	<logarit-roi-rac-template :items="res"></logarit-roi-rac-template>
+</div>
+<script>
+	'use strict';
+	const logaritRoiRacApp = new Vue({
+		el: '#logarit-roi-rac',
+		data: {
+			a: 2,
+			b: 9,
+		},
+		computed: {
+			res: function() {
+				this.a = parseInt(this.a);
+				this.b = parseInt(this.b);
+
+				if(isNaN(this.a) || isNaN(this.b)){
+					console.log('lỗi');
+					return [];
+				}
+				return logaritRoiRac(this.a, this.b);
+			}
+		}
+	});
+</script>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="tab-hellman">
+						<div class="container-fluid" id="hellman">
+		q =
+		<input type="text" v-model="q" size="1">, anpha =
+		<input type="text" v-model="anpha" size="1">
+		<br> x<sub>A</sub> =
+		<input type="text" v-model="xA" size="1">, y<sub>A</sub> = ?
+		<br>x<sub>B</sub> =
+		<input type="text" v-model="xB" size="1">, y<sub>B</sub> = ?
+		<br>A tính k<sub>AB</sub>? B tính k<sub>AB</sub>?
+		<template v-if="run">
+			<br><b><u>Giải</u></b>
+			<br>- Ta có:
+			<br>y<sub>A</sub> = anpha<sup>x<sub>A</sub></sup> mod q
+			<br> = {{anpha}}<sup>{{xA}}</sup> mod {{q}}
+			<mod-template :items="arr.yA" :p="q"></mod-template>
+			<br>
+			<br>y<sub>B</sub> = anpha<sup>x<sub>B</sub></sup> mod q
+			<br>&nbsp;&nbsp;&nbsp; = {{anpha}}<sup>{{xB}}</sup> mod {{q}}
+			<mod-template :items="arr.yB" :p="q"></mod-template>
+			<br>
+			<br>- A tính k<sub>AB</sub> =y<sub>B</sub><sup>x<sub>A</sub></sup> mod q
+			<br>&nbsp;&nbsp;&nbsp; = {{yB}}<sup>{{xA}}</sup> mod {{q}}
+			<mod-template :items="arr.kAB" :p="q"></mod-template>
+			<br>
+			<br>- B tính k<sub>AB</sub> =y<sub>A</sub><sup>x<sub>B</sub></sup> mod q
+			<br>&nbsp;&nbsp;&nbsp; = {{yA}}<sup>{{xB}}</sup> mod {{q}}
+			<mod-template :items="arr.kBA" :p="q"></mod-template>
+		</template>
+	</div>
+	<script>
+	'use strict';
+	const hellManApp = new Vue({
+		el: '#hellman',
+		data: {
+			q: 809,
+			anpha: 3,
+			xA: 101,
+			xB: 83,
+			arr: {
+				xA: [],
+				yA: [],
+				kAB: [],
+				kBA: [],
+			},
+			yA: '',
+			yB: '',
+			kAB: '',
+			kBA: '',
+		},
+		computed: {
+			run: function() {
+				this.q = parseInt(this.q);
+				this.anpha = parseInt(this.anpha);
+				this.xA = parseInt(this.xA);
+				this.xB = parseInt(this.xB);
+
+				if (
+					isNaN(this.q) ||
+					isNaN(this.anpha) ||
+					isNaN(this.xA) ||
+					isNaN(this.xB)
+				) {console.log('fal'); return false; }
+
+				this.arr.yA = mod(this.anpha, this.xA, this.q);
+				this.yA = this.arr.yA[this.arr.yA.length - 1].le;
+
+				this.arr.yB = mod(this.anpha, this.xB, this.q);
+				this.yB = this.arr.yB[this.arr.yB.length - 1].le;
+
+				this.arr.kAB = mod(this.yB, this.xA, this.q);
+				this.arr.kBA = mod(this.yA, this.xB, this.q);
+
+				return true;
+			}
+		}
+	});
+
+	</script>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="tab-elgamal">
+					<div class="container-fluid" id="elgamal">
+	q = <input type="text" v-model="q" size="1">, g = <input type="text" v-model="g" size="1">
+	<br>Người sử dụng A chọn x<sub>A</sub> = <input type="text" v-model="xA" size="1">
+	<br> y<sub>A</sub> = ?
+	<br>Người sử dụng B mã m = <input type="text" v-model="m" size="1">, k = <input type="text" v-model="k" size="1">, (c<sub>1</sub>,c<sub>2</sub>) = ?
+	<template v-if="run">
+		<br><b><u>Giải</u></b>
+		<br>y<sub>A</sub> = g<sup>x<sub>A</sub></sup> mod q
+		<br>&nbsp;&nbsp;&nbsp; = {{g}}<sup>{{xA}}</sup> mod {{q}}
+		<mod-template :items="arr.yA" :p="q"></mod-template>
+		<br>
+		<br>Người sử dụng B mã m = {{m}}, k = {{k}}
+		<br>C<sub>1</sub> = g<sup>k</sup> mod q
+		<br>&nbsp;&nbsp;&nbsp; = {{g}}<sup>{{k}}</sup> mod {{q}}
+		<mod-template :items="arr.C1" :p="q"></mod-template>
+		<br>
+		<br>C<sub>2</sub> = (m * y<sub>A</sub><sup>k</sup>) mod q
+		<br>&nbsp;&nbsp;&nbsp; = ({{m}} * {{yA}}<sup>{{k}}</sup>) mod {{q}}
+		<mod-template :items="arr.C2" :p="q"></mod-template>
+		<br>
+		=> (C1, C2) = ({{C1}}, {{C2}}) => A
+		<br><br>Nguời sửa dụng A giải mã:
+		<br> m = C<sub>2</sub> * (C<sub>1</sub><sup>x<sub>A</sub></sup>)<sup>-1</sup> mod q
+		<br>&nbsp;&nbsp;&nbsp; = {{C2}} * ({{C1}}<sup>{{xA}}</sup>)<sup>-1</sup> mod {{q}}
+		<br><br>
+		{{C1}}<sup>{{xA}}</sup> mod {{q}} =
+		<mod-template :items="arr.C1xA" :p="q"></mod-template>
+		<br>
+		<br>
+		<modulo-template :items="arr.C1xAq" :p="q"></modulo-template>
+		{{C1xA}}<sup>-1</sup> mod {{q}} = {{C1xAq}}
+		<br>m = ({{C2}} * {{C1xAq}}) mod {{q}} = {{m2}}
+		<br>KL : <span v-if="m == m2">Đúng</span><span v-else>sai</span>
+	</template>
+</div>
+<script>
+	'use strict';
+	const elgamalApp = new Vue({
+		el: '#elgamal',
+		data: {
+			q: 353,
+			g: 3,
+			xA: 91,
+			m: 11,
+			k: 41,
+			arr: {
+				yA: [],
+				C1: [],
+				yAkq: [],
+				C1xA: [],
+				C1xAq: [],
+			},
+			yAkq: '',
+			C1xA: '',
+			C1xAq: '',
+			m2: ''
+		},
+		computed: {
+			run: function() {
+				this.q = parseInt(this.q);
+				this.g = parseInt(this.g);
+				this.xA = parseInt(this.xA);
+
+				if(
+					isNaN(this.q) ||
+					isNaN(this.g) ||
+					isNaN(this.xA)
+				) {return false;}
+
+				this.arr.yA = mod(this.g, this.xA, this.q);
+				this.yA = this.arr.yA[this.arr.yA.length - 1].le;
+
+				this.arr.C1 = mod(this.g, this.k, this.q);
+				this.C1 = this.arr.C1[this.arr.C1.length - 1].le;
+
+				this.arr.C2 = mod(this.yA, this.k, this.q, this.m);
+				this.C2 = this.arr.C2[this.arr.C2.length - 1].le;
+
+				this.arr.C1xA = mod(this.C1, this.xA, this.q);
+				this.C1xA = this.arr.C1xA[this.arr.C1xA.length - 1].le;
+
+				this.arr.C1xAq = modulo(this.C1xA, this.q);
+
+				this.C1xAq = this.arr.C1xAq[this.arr.C1xAq.length - 1].b2;
+				if(this.C1xAq < 0) this.C1xAq += this.q;
+
+				this.m2 = (this.C2 * this.C1xAq) % this.q;
+				return true;
+			}
+		}
+	});
+</script>
+				</div>
+				<div role="tabpanel" class="tab-pane active" id="tab-search">
+						<div class="container-fluid" id="search">
+		<input type="text" class="form-control" v-model="q">
+		<ul>
+			<li v-for="item in res">
+				<b>{{item.quiz}}</b>
+				<br> {{item.answer}}
+			</li>
+		</ul>
+	</div>
+	<script>
+		const searchApp = new Vue({
+			el: '#search',
+			data: {
+				q: '',
+				bank: []
+			},
+			computed:{
+				res: function() {
+					return this.bank.filter((item) => {
+						return item.quiz.toLowerCase().search(this.q.toLowerCase()) != -1;
+					});
+				}
+			},
+			created: function() {
+				$.getJSON('bank.json', (res) => {
+					this.bank = res;
+				})
+			}
+		});
+	</script>
+				</div>
+			</div>
+		</div>
+		<script src="vendors/jquery/jquery.min.js"></script>
+		<script src="vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+		<script src="manifest.js"></script>
+	</body>
+
+	</html>
