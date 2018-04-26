@@ -18,6 +18,6 @@
 	"lang":"en-US",
 	"name":"Casio",
 	"short_name":"Casio",
-	"start_url":"./",
+	"start_url":"./index.html",
 	"theme_color":"#4fc08d"
 }
