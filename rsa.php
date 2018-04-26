@@ -5,10 +5,10 @@
  * @Email: TokenTien@gmail.com
  * @Date:   2018-04-24 07:25:12
  * @Last Modified by:   Socola
- * @Last Modified time: 2018-04-25 21:06:38
+ * @Last Modified time: 2018-04-26 07:02:47
  */
 ?>
-	<div class="container" id="rsa">
+	<div class="container-fluid" id="rsa">
 		<h3>RSA</h3>
 		p =
 		<input type="text" size="1" v-model="p">, q =
@@ -37,6 +37,11 @@
 			<br> C = M<sup>e</sup> mod N
 			<br> = {{M}}<sup>{{e}}</sup> mod {{N}}
 			<mod-template :items="arr.C" :p="N"></mod-template>
+			<br>- A giải mã:
+			<br>M = C<sup>d</sup> mod N
+			<br> = {{C}}<sup>{{d}}</sup> mod {{N}}
+			<mod-template :items="arr.M2" :p="N"></mod-template>
+			<br> => Chữ ký <span v-if="M != M2">không</span> được xác minh.
 		</template>
 	</div>
 	<script>
@@ -54,7 +59,9 @@
 			arr: {
 				C: [],
 				d: [],
-			}
+				M2: []
+			},
+			M2: ''
 		},
 		methods: {
 
@@ -78,6 +85,10 @@
 				this.d = this.arr.d[this.arr.d.length - 1].b2;
 				if (this.d < 0) { this.d = this.phiN + this.d; }
 				this.arr.C = mod(this.M, this.e, this.N);
+				this.C = this.arr.C[this.arr.C.length - 1].le;
+
+				this.arr.M2 = mod(this.C, this.d, this.N);
+				this.M2 = this.arr.M2[this.arr.M2.length - 1].le;
 				return true;
 			}
 		}

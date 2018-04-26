@@ -5,7 +5,7 @@
  * @Email: TokenTien@gmail.com
  * @Date:   2018-04-23 07:03:47
  * @Last Modified by:   Socola
- * @Last Modified time: 2018-04-26 05:55:55
+ * @Last Modified time: 2018-04-26 06:57:37
  */
 ?>
 	<!DOCTYPE html>
@@ -33,7 +33,7 @@
 				<li role="presentation">
 					<a href="#home" aria-controls="home" role="tab" data-toggle="tab">DSA</a>
 				</li>
-				<li role="presentation">
+				<li role="presentation" class="active">
 					<a href="#tab-rsa" aria-controls="tab" role="tab" data-toggle="tab">RSA</a>
 				</li>
 				<li role="presentation">
@@ -60,7 +60,7 @@
 				<li role="presentation">
 					<a href="#tab-elgamal" aria-controls="tab" role="tab" data-toggle="tab">Elgamal</a>
 				</li>
-				<li role="presentation" class="active">
+				<li role="presentation">
 					<a href="#tab-search" aria-controls="tab" role="tab" data-toggle="tab">Search</a>
 				</li>
 			</ul>
@@ -69,7 +69,7 @@
 				<div role="tabpanel" class="tab-pane" id="home">
 					<?php require_once 'dsa.php'; ?>
 				</div>
-				<div role="tabpanel" class="tab-pane" id="tab-rsa">
+				<div role="tabpanel" class="tab-pane active" id="tab-rsa">
 					<?php require_once 'rsa.php'; ?>
 				</div>
 				<div role="tabpanel" class="tab-pane" id="tab-modulo">
@@ -96,7 +96,7 @@
 				<div role="tabpanel" class="tab-pane" id="tab-elgamal">
 					<?php require_once 'elgamal.php'; ?>
 				</div>
-				<div role="tabpanel" class="tab-pane active" id="tab-search">
+				<div role="tabpanel" class="tab-pane" id="tab-search">
 					<?php require_once 'search.php'; ?>
 				</div>
 			</div>

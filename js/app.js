@@ -2,10 +2,12 @@
  * @Author: Socola
  * @Date:   2018-04-24 13:47:17
  * @Last Modified by:   Socola
- * @Last Modified time: 2018-04-25 21:43:02
+ * @Last Modified time: 2018-04-26 07:03:12
  */
 'use strict';
-
+alert(`Cái giá phải trả đôi khi là rất đắt.
+\nMình cũng không chịu trách nhiệm với bất cứ sai xót nào do hệ thống gây ra
+\nBạn chắc chắn muốn đánh cược?`);
 function modulo(a, b) {
 	var res = [];
 	var row = { q: '', a1: 1, a2: 0, a3: b, b1: 0, b2: 1, b3: a };
