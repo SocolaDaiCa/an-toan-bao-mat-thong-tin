@@ -5,7 +5,7 @@
  * @Email: TokenTien@gmail.com
  * @Date:   2018-04-23 07:03:47
  * @Last Modified by:   Socola
- * @Last Modified time: 2018-04-26 06:57:37
+ * @Last Modified time: 2018-04-26 07:10:37
  */
 ?>
 	<!DOCTYPE html>
@@ -26,7 +26,7 @@
 
 	<body>
 		<script src="js/app.js"></script>
-		<?php //require_once 'casio.php'; ?>
+		<?php require_once 'casio.php'; ?>
 		<div role="tabpanel">
 			<!-- Nav tabs -->
 			<ul class="nav nav-tabs" role="tablist">
